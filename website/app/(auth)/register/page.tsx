@@ -1,16 +1,43 @@
+"use client";
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { z } from "zod";
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+const formSchema = z.object({
+    username: z.string().min(2).max(50),
+    password: z.string().min(2).max(50),
+    email: z.string().email(),
+});
 export default function LoginPage() {
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            username: "",
+            password: "",
+            email: "",
+        },
+    });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        console.log(values);
+    }
     return (
-        <section className="flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent">
-            <form
-                action=""
-                className="bg-card m-auto h-fit w-full max-w-sm rounded-[calc(var(--radius)+.125rem)] border p-0.5 shadow-md dark:[--color-muted:var(--color-zinc-900)]"
-            >
+        <section className="flex min-h-screen bg-zinc-50 px-4 dark:bg-transparent ">
+            <div className="bg-card m-auto h-fit w-full max-w-sm rounded-[calc(var(--radius)+.125rem)] border p-0.5 shadow-md dark:[--color-muted:var(--color-zinc-900)]">
                 <div className="p-8 pb-6">
                     <div className="text-center">
                         <Link href="/" aria-label="go home">
@@ -26,56 +53,72 @@ export default function LoginPage() {
                     <hr className="my-4 border-dashed" />
 
                     <div className="space-y-6">
-                        <div className="space-y-2">
-                            <Label htmlFor="Username" className="block text-sm">
-                                Username
-                            </Label>
-                            <Input
-                                type="text"
-                                required
-                                name="Username"
-                                id="Username"
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="email" className="block text-sm">
-                                email
-                            </Label>
-                            <Input
-                                type="email"
-                                required
-                                name="email"
-                                id="email"
-                            />
-                        </div>
-
-                        <div className="space-y-0.5">
-                            <div className="flex items-center justify-between">
-                                <Label
-                                    htmlFor="pwd"
-                                    className="text-title text-sm"
-                                >
-                                    Password
-                                </Label>
-                                <Button asChild variant="link" size="sm">
-                                    <Link
-                                        href="#"
-                                        className="link intent-info variant-ghost text-sm"
-                                    >
-                                        Forgot your Password ?
-                                    </Link>
+                        <Form {...form}>
+                            <form
+                                onSubmit={form.handleSubmit(onSubmit)}
+                                className="space-y-8"
+                            >
+                                <FormField
+                                    control={form.control}
+                                    name="username"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Username</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="shadcn"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="email"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>email</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="shadcn"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="password"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="flex justify-between">
+                                                Password
+                                                <Link
+                                                    href="/forgot-password"
+                                                    className="hover:underline text-sm"
+                                                >
+                                                    Forgot Your Password ?
+                                                </Link>
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="*******"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <Button type="submit" className="w-full">
+                                    Submit
                                 </Button>
-                            </div>
-                            <Input
-                                type="password"
-                                required
-                                name="pwd"
-                                id="pwd"
-                                className="input sz-md variant-mixed"
-                            />
-                        </div>
-
-                        <Button className="w-full">Continue</Button>
+                            </form>
+                        </Form>
                     </div>
                 </div>
 
@@ -87,7 +130,7 @@ export default function LoginPage() {
                         </Button>
                     </p>
                 </div>
-            </form>
+            </div>
         </section>
     );
 }
