@@ -4,7 +4,7 @@ export default function page() {
             <div className="mx-auto max-w-5xl px-6">
                 <div className="grid gap-y-12 px-2 lg:[grid-template-columns:1fr_auto]">
                     <div className="text-center lg:text-left">
-                        <h2 className="mb-4 text-3xl font-semibold md:text-4xl">
+                        <h2 className="mb-4 text-3xl font-semibold md:text-4xl tracking-wide">
                             What <br className="hidden lg:block" /> Is{" "}
                             <br className="hidden lg:block" />
                             (Project Name)
@@ -14,7 +14,9 @@ export default function page() {
 
                     <div className="divide-y divide-dashed sm:mx-auto sm:max-w-lg lg:mx-0">
                         <div className="pb-6">
-                            <h3 className="font-medium">(header)?</h3>
+                            <h3 className="font-medium  tracking-wide uppercase">
+                                (header)
+                            </h3>
                             <p className="text-muted-foreground mt-4">
                                 (paragraf)
                             </p>
@@ -32,13 +34,17 @@ export default function page() {
                             </ol>
                         </div>
                         <div className="py-6">
-                            <h3 className="font-medium">(header)</h3>
+                            <h3 className="font-medium  tracking-wide uppercase">
+                                (header)
+                            </h3>
                             <p className="text-muted-foreground mt-4">
                                 (paragraf)
                             </p>
                         </div>
                         <div className="py-6">
-                            <h3 className="font-medium">(header)</h3>
+                            <h3 className="font-medium  tracking-wide uppercase">
+                                (header)
+                            </h3>
                             <p className="text-muted-foreground my-4">
                                 (paragraf)
                             </p>
@@ -52,8 +58,8 @@ export default function page() {
                             </ul>
                         </div>
                         <div className="py-6">
-                            <h3 className="font-medium">
-                                Do you offer phone support?
+                            <h3 className="font-medium  tracking-wide uppercase">
+                                (header)
                             </h3>
                             <p className="text-muted-foreground mt-4">
                                 (paragraf)

@@ -70,7 +70,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
 
                                     <Button asChild size="sm">
                                         <Link href="/register">
-                                            <span>Get Started</span>
+                                            <span>Register</span>
                                         </Link>
                                     </Button>
                                 </div>

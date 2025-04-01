@@ -43,8 +43,8 @@ export default function LoginPage() {
                         <Link href="/" aria-label="go home">
                             <Logo />
                         </Link>
-                        <h1 className="mb-1 mt-4 text-xl font-semibold">
-                            Create a (Project Name) Account
+                        <h1 className="mb-1 mt-4 text-xl font-semibold tracking-wide">
+                            Register
                         </h1>
                         <p className="text-sm">
                             Welcome! Create an account to get started
@@ -66,7 +66,7 @@ export default function LoginPage() {
                                             <FormLabel>Username</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder="shadcn"
+                                                    placeholder="username"
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -82,7 +82,7 @@ export default function LoginPage() {
                                             <FormLabel>email</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder="shadcn"
+                                                    placeholder="example@gmail.com"
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -115,7 +115,7 @@ export default function LoginPage() {
                                     )}
                                 />
                                 <Button type="submit" className="w-full">
-                                    Submit
+                                    Continue
                                 </Button>
                             </form>
                         </Form>

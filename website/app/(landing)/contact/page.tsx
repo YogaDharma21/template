@@ -8,7 +8,7 @@ export default function page() {
     return (
         <section className="py-14 overflow-hidden">
             <div className="mx-auto max-w-5xl px-8 lg:px-0">
-                <h1 className="text-center text-4xl font-semibold lg:text-5xl">
+                <h1 className="text-center text-4xl font-semibold lg:text-5xl tracking-wide">
                     Contact Us
                 </h1>
                 <p className="mt-4 text-center">

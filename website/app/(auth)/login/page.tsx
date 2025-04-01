@@ -40,11 +40,11 @@ export default function LoginPage() {
                         <Link href="/" aria-label="go home">
                             <Logo />
                         </Link>
-                        <h1 className="mb-1 mt-4 text-xl font-semibold">
-                            Sign In to (Project Name)
+                        <h1 className="mb-1 mt-4 text-xl font-semibold tracking-wide">
+                            Log In
                         </h1>
                         <p className="text-sm">
-                            Welcome back! Sign in to continue
+                            Welcome back! Log In to continue
                         </p>
                     </div>
                     <hr className="my-4 border-white/30" />
@@ -63,7 +63,7 @@ export default function LoginPage() {
                                             <FormLabel>Username</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder="shadcn"
+                                                    placeholder="username"
                                                     {...field}
                                                 />
                                             </FormControl>
