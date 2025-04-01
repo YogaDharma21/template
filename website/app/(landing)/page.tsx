@@ -9,25 +9,10 @@ import { useState } from "react";
 export default function page() {
     return (
         <>
-            <main>
-                <div className="relative mx-auto max-w-5xl px-6 py-28 lg:py-20">
+            <main className="overflow-hidden">
+                <div className="relative mx-auto max-w-5xl py-14">
                     <div className="lg:flex lg:items-center lg:gap-12">
                         <div className="relative z-10 mx-auto max-w-xl text-center lg:ml-0 lg:w-1/2 lg:text-left">
-                            <Link
-                                href="/"
-                                className="rounded-(--radius) mx-auto flex w-fit items-center gap-2 border p-1 pr-3 lg:ml-0"
-                            >
-                                <span className="bg-muted rounded-[calc(var(--radius)-0.25rem)] px-2 py-1 text-xs">
-                                    New
-                                </span>
-                                <span className="text-sm">
-                                    (New feature name)
-                                </span>
-                                <span className="bg-(--color-border) block h-4 w-px"></span>
-
-                                <ArrowRight className="size-4" />
-                            </Link>
-
                             <h1 className="mt-10 text-balance text-4xl font-bold md:text-5xl xl:text-5xl">
                                 Project key point
                             </h1>
@@ -45,22 +30,25 @@ export default function page() {
                             </div>
                         </div>
                     </div>
-                    <div className="absolute inset-0 -mx-4 rounded-3xl p-3 lg:col-span-3">
-                        <div className="relative">
-                            <div className="bg-radial-[at_65%_25%] to-background z-1 -inset-17 absolute from-transparent to-40%"></div>
+                    <div className="relative -mr-56 mt-8 overflow-hidden px-2 sm:mr-0 sm:mt-12 md:mt-20">
+                        <div
+                            aria-hidden
+                            className="bg-linear-to-b to-background absolute inset-0 z-10 from-transparent from-35%"
+                        />
+                        <div className="inset-shadow-2xs ring-background dark:inset-shadow-white/20 bg-background relative mx-auto max-w-5xl overflow-hidden rounded-2xl border p-4 shadow-lg shadow-zinc-950/15 ring-1">
                             <Image
-                                className="hidden dark:block"
-                                src="/music.png"
-                                alt="app illustration"
-                                width={2796}
-                                height={2008}
+                                className="bg-background aspect-15/8 relative hidden rounded-2xl dark:block"
+                                src="/music.webp"
+                                alt="app screen"
+                                width="2700"
+                                height="1440"
                             />
                             <Image
-                                className="dark:hidden"
-                                src="/music-light.png"
-                                alt="app illustration"
-                                width={2796}
-                                height={2008}
+                                className="z-2 border-border/25 aspect-15/8 relative rounded-2xl border dark:hidden"
+                                src="/music.webp"
+                                alt="app screen"
+                                width="2700"
+                                height="1440"
                             />
                         </div>
                     </div>

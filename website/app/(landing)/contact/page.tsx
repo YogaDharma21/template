@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 
 export default function page() {
     return (
-        <section className="py-32">
+        <section className="py-14 overflow-hidden">
             <div className="mx-auto max-w-5xl px-8 lg:px-0">
                 <h1 className="text-center text-4xl font-semibold lg:text-5xl">
                     Contact Us
