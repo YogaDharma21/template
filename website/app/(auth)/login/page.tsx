@@ -47,7 +47,7 @@ export default function LoginPage() {
                             Welcome back! Sign in to continue
                         </p>
                     </div>
-                    <hr className="my-4 border-dashed" />
+                    <hr className="my-4 border-white/30" />
 
                     <div className="space-y-6">
                         <Form {...form}>

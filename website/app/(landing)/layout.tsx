@@ -18,7 +18,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
             <header className="sticky top-0 z-50">
                 <nav
                     data-state={menuState && "active"}
-                    className="w-full border-b border-dashed bg-white/80 backdrop-blur-md dark:bg-zinc-950/80"
+                    className="w-full border-b border-white/30 bg-white/80 backdrop-blur-md dark:bg-zinc-950/80"
                 >
                     <div className="m-auto max-w-5xl px-6">
                         <div className="flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
@@ -61,7 +61,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
                                     </ul>
                                 </div>
 
-                                <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit lg:border-l lg:pl-6">
+                                <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit lg:border-l-2 border-white/30 lg:pl-6">
                                     <Button asChild variant="outline" size="sm">
                                         <Link href="/login">
                                             <span>Login</span>
