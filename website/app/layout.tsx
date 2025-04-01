@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Kanit } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const kanit = Kanit({
     subsets: ["latin"],
@@ -29,7 +30,14 @@ export default function RootLayout({
                 className={`${kanit.variable} ${geist.variable} antialiased`}
                 suppressHydrationWarning
             >
-                {children}
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="dark"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    {children}
+                </ThemeProvider>
             </body>
         </html>
     );
