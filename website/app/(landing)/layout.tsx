@@ -1,5 +1,6 @@
 "use client";
 import Logo from "@/components/logo";
+import FooterSection from "@/components/section/footer";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
@@ -80,6 +81,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
                 </nav>
             </header>
             {children}
+            <FooterSection />
         </div>
     );
 }
