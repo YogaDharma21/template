@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Inter } from "next/font/google";
+import { Geist, Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
-const inter = Inter({
+const poppins = Poppins({
     subsets: ["latin"],
-    weight: ["400", "500", "600", "700"],
-    variable: "--font-inter",
+    weight: ["300", "400", "500", "600", "700"],
+    variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <body
-                className={`${inter.variable} antialiased`}
+                className={`${poppins.variable} antialiased`}
                 suppressHydrationWarning
             >
                 <ThemeProvider

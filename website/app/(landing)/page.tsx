@@ -13,10 +13,10 @@ export default function page() {
                 <div className="relative mx-auto max-w-5xl py-14">
                     <div className="lg:flex lg:items-center lg:gap-12">
                         <div className="relative z-10 mx-auto max-w-xl text-center">
-                            <h1 className="mt-10 text-balance text-4xl font-medium md:text-5xl xl:text-5xl tracking-wide">
+                            <h1 className="mt-10 text-4xl font-bold md:text-5xl xl:text-5xl tracking-wide">
                                 Project Proposition
                             </h1>
-                            <p className="mt-8 text-lg">Project description</p>
+                            <p className="mt-8 text-lg text-white/65">Project description</p>
 
                             <div className="mt-8">
                                 <Button asChild size="lg">
