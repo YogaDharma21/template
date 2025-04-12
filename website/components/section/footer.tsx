@@ -3,28 +3,12 @@ import Logo from "../logo";
 
 const links = [
     {
-        title: "Features",
-        href: "#",
-    },
-    {
-        title: "Solution",
-        href: "#",
-    },
-    {
-        title: "Customers",
-        href: "#",
-    },
-    {
-        title: "Pricing",
-        href: "#",
-    },
-    {
-        title: "Help",
-        href: "#",
-    },
-    {
         title: "About",
         href: "#",
+    },
+    {
+        title: "Contact",
+        href: "#contact",
     },
 ];
 
@@ -180,7 +164,8 @@ export default function FooterSection() {
                 </div>
                 <span className="text-muted-foreground block text-center text-sm">
                     {" "}
-                    © {new Date().getFullYear()} (Project Name), All rights reserved
+                    © {new Date().getFullYear()} (Project Name), All rights
+                    reserved
                 </span>
             </div>
         </footer>
