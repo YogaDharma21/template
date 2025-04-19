@@ -2,9 +2,9 @@
 import Logo from "@/components/logo";
 import FooterSection from "@/components/section/footer";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const menuItems = [
     { name: "About", href: "/about" },
@@ -13,6 +13,18 @@ const menuItems = [
 
 export default function layout({ children }: { children: React.ReactNode }) {
     const [menuState, setMenuState] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        // Check authentication status on mount and localStorage changes
+        const token = localStorage.getItem("token");
+        setIsAuthenticated(!!token);
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+    };
 
     return (
         <div suppressHydrationWarning>
@@ -63,17 +75,44 @@ export default function layout({ children }: { children: React.ReactNode }) {
                                 </div>
 
                                 <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit lg:border-l-2 border-white/30 lg:pl-6">
-                                    <Button asChild variant="outline" size="sm">
-                                        <Link href="/login">
-                                            <span>Login</span>
-                                        </Link>
-                                    </Button>
-
-                                    <Button asChild size="sm">
-                                        <Link href="/register">
-                                            <span>Register</span>
-                                        </Link>
-                                    </Button>
+                                    {isAuthenticated ? (
+                                        <>
+                                            <Button
+                                                asChild
+                                                variant="outline"
+                                                size="sm"
+                                            >
+                                                <Link href="/dashboard">
+                                                    <span>Dashboard</span>
+                                                </Link>
+                                            </Button>
+                                            <Button
+                                                size="sm"
+                                                onClick={handleLogout}
+                                                className="flex items-center gap-2"
+                                            >
+                                                <span>Logout</span>
+                                                <LogOut className="size-4" />
+                                            </Button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Button
+                                                asChild
+                                                variant="outline"
+                                                size="sm"
+                                            >
+                                                <Link href="/login">
+                                                    <span>Login</span>
+                                                </Link>
+                                            </Button>
+                                            <Button asChild size="sm">
+                                                <Link href="/register">
+                                                    <span>Register</span>
+                                                </Link>
+                                            </Button>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </div>
