@@ -16,21 +16,41 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import axios from "@/lib/axios";
 const formSchema = z.object({
-    username: z.string().min(2).max(50),
+    email: z.string().email().min(2).max(50),
     password: z.string().min(2).max(50),
+    device_name: z.string().default('browser'),
 });
 export default function LoginPage() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            username: "",
+            email: "",
             password: "",
+            device_name: "browser",
         },
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+        const csrf = () => axios.get("/sanctum/csrf-cookie");
+        csrf().then(() => {
+            axios
+                .post("/api/auth/login", values)
+                .then((response) => {
+                    if (response.status === 200) {
+                        window.location.href = "/";
+                    }
+                    console.log(response.data.token);
+                    if (response.data.token) {
+                        window.localStorage.setItem("token", response.data.token);
+                        window.location.href = "/";
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        });
     }
     return (
         <section className="flex min-h-screen bg-zinc-50 px-4 dark:bg-transparent">
@@ -57,13 +77,13 @@ export default function LoginPage() {
                             >
                                 <FormField
                                     control={form.control}
-                                    name="username"
+                                    name="email"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Username</FormLabel>
+                                            <FormLabel>Email</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder="username"
+                                                    placeholder="email"
                                                     {...field}
                                                 />
                                             </FormControl>

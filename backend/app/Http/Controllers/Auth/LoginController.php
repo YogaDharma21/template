@@ -7,30 +7,66 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Exception;
 
 class LoginController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-            'device_name' => 'required|string',
-        ]);
+        try {
+            try {
+                $validated = $request->validate([
+                    'email' => 'required|email',
+                    'password' => 'required|string|min:8',
+                    'device_name' => 'required|string',
+                ]);
+            } catch (ValidationException $e) {
+                return response()->json([
+                    'message' => 'Validation failed',
+                    'errors' => $e->errors(),
+                ], 422);
+            }
 
-        $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+            if (!$user) {
+                return response()->json([
+                    'message' => 'Authentication failed',
+                    'errors' => ['email' => ['No user found with this email']],
+                ], 404);
+            }
+
+            if (!Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'message' => 'Authentication failed',
+                    'errors' => ['password' => ['Invalid password']],
+                ], 401);
+            }
+
+            try {
+                $token = $user->createToken($request->device_name)->plainTextToken;
+            } catch (Exception $e) {
+                return response()->json([
+                    'message' => 'Token generation failed',
+                    'errors' => ['token' => ['Could not create access token']],
+                ], 500);
+            }
+
+            return response()->json([
+                'message' => 'Login successful',
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ],
+                'token' => $token,
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Server error',
+                'errors' => ['server' => [$e->getMessage()]],
+            ], 500);
         }
-
-        $token = $user->createToken($request->device_name)->plainTextToken;
-
-        return response()->json([
-            "user" => $user,
-            "token" => $token,
-        ], 201);
     }
 }
