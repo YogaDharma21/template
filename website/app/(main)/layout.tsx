@@ -1,5 +1,17 @@
-import React from "react";
+"use client";
 
-export default function layout( { children }: { children: React.ReactNode }) {
-  return <div>{children}</div>;
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+    const router = useRouter();
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            router.push("/login");
+        }
+    }, [router]);
+
+    return <div>{children}</div>;
 }

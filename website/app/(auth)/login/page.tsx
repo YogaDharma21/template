@@ -17,11 +17,14 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import axios from "@/lib/axios";
+import { useAuth } from "@/store/useAuth";
+
 const formSchema = z.object({
     email: z.string().email().min(2).max(50),
     password: z.string().min(2).max(50),
-    device_name: z.string().default('browser'),
+    device_name: z.string().default("browser"),
 });
+
 export default function LoginPage() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -32,18 +35,16 @@ export default function LoginPage() {
         },
     });
 
+    const setUser = useAuth((state) => state.setUser);
+
     function onSubmit(values: z.infer<typeof formSchema>) {
         const csrf = () => axios.get("/sanctum/csrf-cookie");
         csrf().then(() => {
             axios
                 .post("/api/auth/login", values)
                 .then((response) => {
-                    if (response.status === 200) {
-                        window.location.href = "/";
-                    }
-                    console.log(response.data.token);
                     if (response.data.token) {
-                        window.localStorage.setItem("token", response.data.token);
+                        setUser(response.data.token);
                         window.location.href = "/";
                     }
                 })

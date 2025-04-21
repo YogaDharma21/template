@@ -2,6 +2,7 @@
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import axios from "@/lib/axios";
+import { useAuth } from "@/store/useAuth";
 import { ArrowRight, Mail, Menu, Rocket, SendHorizonal, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,17 +37,16 @@ export default function page() {
             });
         }
     }, []);
-
+    const user = useAuth((state) => state.user);
+    console.log("User data:", user);
     return (
         <>
             <main className="overflow-hidden">
-                {/* Add this section to display token */}
-                {token && (
+                {user && (
                     <div className="bg-slate-800 p-4 m-4 rounded-lg">
-                        <p className="text-sm text-white/70">Current Token:</p>
-                        <p className="text-xs text-white/50 break-all">
-                            {token}
-                        </p>
+                        <p>User: </p>
+                        <p>{user.token}</p>
+                        <p>{user.isAuthenticated ? 'Authenticated' : 'Not Authenticated'}</p>
                     </div>
                 )}
 
