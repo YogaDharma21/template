@@ -14,14 +14,22 @@ const menuItems = [
 export default function layout({ children }: { children: React.ReactNode }) {
     const [menuState, setMenuState] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isLoading, setIsLoading] = useState(true); // Add loading state
 
     useEffect(() => {
         // Check authentication status on mount and localStorage changes
-        const token = localStorage.getItem("token");
-        setIsAuthenticated(!!token);
+        const checkAuth = () => {
+            setIsLoading(true);
+            const token = localStorage.getItem("token");
+            setIsAuthenticated(!!token);
+            setIsLoading(false);
+        };
+
+        checkAuth();
     }, []);
 
     const handleLogout = () => {
+        setIsLoading(true);
         localStorage.removeItem("token");
         window.location.href = "/login";
     };
@@ -75,12 +83,19 @@ export default function layout({ children }: { children: React.ReactNode }) {
                                 </div>
 
                                 <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit lg:border-l-2 border-white/30 lg:pl-6">
-                                    {isAuthenticated ? (
+                                    {isLoading ? (
+                                        // Loading skeleton buttons
+                                        <>
+                                            <div className="h-9 w-24 animate-pulse rounded-md bg-muted" />
+                                            <div className="h-9 w-24 animate-pulse rounded-md bg-muted" />
+                                        </>
+                                    ) : isAuthenticated ? (
                                         <>
                                             <Button
                                                 asChild
                                                 variant="outline"
                                                 size="sm"
+                                                disabled={isLoading}
                                             >
                                                 <Link href="/dashboard">
                                                     <span>Dashboard</span>
@@ -90,6 +105,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
                                                 size="sm"
                                                 onClick={handleLogout}
                                                 className="flex items-center gap-2"
+                                                disabled={isLoading}
                                             >
                                                 <span>Logout</span>
                                                 <LogOut className="size-4" />
@@ -101,12 +117,17 @@ export default function layout({ children }: { children: React.ReactNode }) {
                                                 asChild
                                                 variant="outline"
                                                 size="sm"
+                                                disabled={isLoading}
                                             >
                                                 <Link href="/login">
                                                     <span>Login</span>
                                                 </Link>
                                             </Button>
-                                            <Button asChild size="sm">
+                                            <Button
+                                                asChild
+                                                size="sm"
+                                                disabled={isLoading}
+                                            >
                                                 <Link href="/register">
                                                     <span>Register</span>
                                                 </Link>

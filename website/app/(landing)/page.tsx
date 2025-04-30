@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 
 export default function page() {
     const [token, setToken] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
@@ -27,28 +28,42 @@ export default function page() {
                     })
                     .then((response) => {
                         console.log("Profile data:", response.data);
+                        
+                        setIsLoading(false);
                     })
                     .catch((error) => {
                         console.error(
                             "Profile error:",
                             error.response?.data || error.message
                         );
+                        setIsLoading(false);
                     });
             });
+        } else {
+            setIsLoading(false);
         }
     }, []);
+
     const user = useAuth((state) => state.user);
-    console.log("User data:", user);
+
     return (
         <>
             <main className="overflow-hidden">
-                {user && (
+                {isLoading ? (
+                    <div className="bg-slate-800 p-4 m-4 rounded-lg">
+                        <div className="space-y-2">
+                            <div className="h-4 w-20 animate-pulse rounded bg-slate-700" />
+                            <div className="h-4 w-32 animate-pulse rounded bg-slate-700" />
+                            <div className="h-4 w-40 animate-pulse rounded bg-slate-700" />
+                        </div>
+                    </div>
+                ) : user ? (
                     <div className="bg-slate-800 p-4 m-4 rounded-lg">
                         <p>User: </p>
                         <p>{user.token}</p>
                         <p>{user.isAuthenticated ? 'Authenticated' : 'Not Authenticated'}</p>
                     </div>
-                )}
+                ) : null}
 
                 <div className="relative mx-auto max-w-5xl py-14">
                     <div className="lg:flex lg:items-center lg:gap-12">
