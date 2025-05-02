@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import axios from "@/lib/axios";
-import { useAuth } from "@/store/useAuth";
+import { useToken } from "@/store/useToken";
 import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
@@ -36,7 +36,7 @@ export default function LoginPage() {
         },
     });
 
-    const setUser = useAuth((state) => state.setUser);
+    const setToken = useToken((state) => state.setToken);
     const router = useRouter();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -46,7 +46,10 @@ export default function LoginPage() {
                 .post("/api/auth/login", values)
                 .then((response) => {
                     if (response.data.token) {
-                        setUser(response.data.token);
+                        setToken(
+                            response.data.token,
+                            response.data.expires_in || 60
+                        );
                         router.push("/");
                     }
                 })
@@ -111,6 +114,7 @@ export default function LoginPage() {
                                             <FormControl>
                                                 <Input
                                                     placeholder="*******"
+                                                    type="password"
                                                     {...field}
                                                 />
                                             </FormControl>

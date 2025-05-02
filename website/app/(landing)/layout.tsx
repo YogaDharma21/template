@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, LogOut } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/store/useAuth";
+import { useToken } from "@/store/useToken";
 import { useRouter } from "next/navigation";
 
 const menuItems = [
@@ -16,11 +16,10 @@ const menuItems = [
 export default function layout({ children }: { children: React.ReactNode }) {
     const [menuState, setMenuState] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const { user, logout } = useAuth();
+    const { token, logout } = useToken();
     const router = useRouter();
 
     useEffect(() => {
-        // Initial auth check
         const checkAuth = () => {
             setIsLoading(true);
             setTimeout(() => {
@@ -93,7 +92,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
                                             <div className="h-9 w-24 animate-pulse rounded-md bg-muted" />
                                             <div className="h-9 w-24 animate-pulse rounded-md bg-muted" />
                                         </>
-                                    ) : user.isAuthenticated ? (
+                                    ) : token.isAuthenticated ? (
                                         <>
                                             <Button
                                                 asChild

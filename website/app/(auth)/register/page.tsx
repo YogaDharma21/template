@@ -17,7 +17,7 @@ import {
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "@/store/useAuth";
+import { useToken } from "@/store/useToken";
 import axios from "@/lib/axios";
 import { useRouter } from "next/navigation";
 
@@ -39,7 +39,7 @@ export default function LoginPage() {
         },
     });
 
-    const setUser = useAuth((state) => state.setUser);
+    const setToken = useToken((state) => state.setToken);
     const router = useRouter();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -49,7 +49,7 @@ export default function LoginPage() {
                 .post("/api/auth/register", values)
                 .then((response) => {
                     if (response.data.token) {
-                        setUser(response.data.token);
+                        setToken(response.data.token);
                         router.push("/");
                     }
                 })
@@ -131,6 +131,7 @@ export default function LoginPage() {
                                             <FormControl>
                                                 <Input
                                                     placeholder="*******"
+                                                    type="password"
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -138,7 +139,7 @@ export default function LoginPage() {
                                         </FormItem>
                                     )}
                                 />
-                                <Button type="submit" className="w-full">
+                                <Button type="submit" className="w-full cursor">
                                     Continue
                                 </Button>
                             </form>

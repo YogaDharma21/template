@@ -44,23 +44,19 @@ class LoginController extends Controller
             }
 
             try {
-                $token = $user->createToken($request->device_name)->plainTextToken;
+                $token = $user->createToken($request->device_name, ['*'], now()->addMinutes(config('sanctum.expiration')))->plainTextToken;
+
+                return response()->json([
+                    'token' => $token,
+                    'expires_in' => config('sanctum.expiration') * 60,
+                    'user' => $user
+                ]);
             } catch (Exception $e) {
                 return response()->json([
                     'message' => 'Token generation failed',
                     'errors' => ['token' => ['Could not create access token']],
                 ], 500);
             }
-
-            return response()->json([
-                'message' => 'Login successful',
-                'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                ],
-                'token' => $token,
-            ], 200);
 
         } catch (Exception $e) {
             return response()->json([

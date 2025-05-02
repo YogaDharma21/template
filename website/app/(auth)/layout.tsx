@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/store/useAuth";
+import { useToken } from "@/store/useToken";
 
 export default function AuthLayout({
     children,
@@ -9,15 +9,15 @@ export default function AuthLayout({
     children: React.ReactNode;
 }) {
     const router = useRouter();
-    const user = useAuth((state) => state.user);
+    const token = useToken((state) => state.token);
 
     useEffect(() => {
-        if (user.isAuthenticated) {
+        if (token.isAuthenticated) {
             router.replace("/");
         }
-    }, [router, user.isAuthenticated]);
+    }, [router, token.isAuthenticated]);
 
-    if (user.isAuthenticated) {
+    if (token.isAuthenticated) {
         return null;
     }
 
