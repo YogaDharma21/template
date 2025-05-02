@@ -17,25 +17,44 @@ import {
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "@/store/useAuth";
+import axios from "@/lib/axios";
 const formSchema = z.object({
-    username: z.string().min(2).max(50),
+    name: z.string().min(2).max(50),
     password: z.string().min(2).max(50),
     email: z.string().email(),
+    device_name: z.string(),
 });
 export default function LoginPage() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            username: "",
+            name: "",
             password: "",
             email: "",
+            device_name: "browser",
         },
     });
 
+    const setUser = useAuth((state) => state.setUser);
+
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+        const csrf = () => axios.get("/sanctum/csrf-cookie");
+        csrf().then(() => {
+            axios
+                .post("/api/auth/register", values)
+                .then((response) => {
+                    if (response.data.token) {
+                        setUser(response.data.token);
+                        window.location.href = "/";
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        });
     }
-    
+
     return (
         <section className="flex min-h-screen bg-zinc-50 px-4 dark:bg-transparent ">
             <div className="bg-card m-auto h-fit w-full max-w-sm rounded-[calc(var(--radius)+.125rem)] border p-0.5 shadow-md dark:[--color-muted:var(--color-zinc-900)]">
@@ -61,13 +80,13 @@ export default function LoginPage() {
                             >
                                 <FormField
                                     control={form.control}
-                                    name="username"
+                                    name="name"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Username</FormLabel>
+                                            <FormLabel>Name</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder="username"
+                                                    placeholder="name"
                                                     {...field}
                                                 />
                                             </FormControl>
