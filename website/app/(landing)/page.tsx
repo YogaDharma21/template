@@ -1,7 +1,6 @@
 "use client";
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import axios from "@/lib/axios";
 import { useToken } from "@/store/useToken";
 import { useUser } from "@/store/useUser";
 import { ArrowRight, Mail, Menu, Rocket, SendHorizonal, X } from "lucide-react";
@@ -13,35 +12,17 @@ export default function page() {
     const [isLoading, setIsLoading] = useState(true);
     const token = useToken((state) => state.token);
     const user = useUser((state) => state.user);
+
     useEffect(() => {
-        const fetchProfile = async () => {
-            if (token.isAuthenticated && token.token) {
-                try {
-                    const csrf = () => axios.get("/sanctum/csrf-cookie");
-                    await csrf();
+        // Set loading to false after a short delay to prevent flash
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 500);
 
-                    const response = await axios.get("/api/profile", {
-                        headers: {
-                            Authorization: `Bearer ${token.token}`,
-                            Accept: "application/json",
-                        },
-                    });
-
-                    console.log("Profile data:", response.data);
-                } catch (error) {
-                    console.error("Profile error:", error);
-                } finally {
-                    setIsLoading(false);
-                }
-            } else {
-                setIsLoading(false);
-            }
-        };
-
-        fetchProfile();
-    }, [token.isAuthenticated, token.token]);
-    // if token exist but no user data, get from api and put on user with setUser from useUser
+        return () => clearTimeout(timer);
+    }, []);
     console.log(user);
+    console.log(token);
     return (
         <>
             <main className="overflow-hidden">
@@ -53,14 +34,14 @@ export default function page() {
                             <div className="h-4 w-40 animate-pulse rounded bg-slate-700" />
                         </div>
                     </div>
-                ) : token ? (
+                ) : token.isAuthenticated && user.id ? (
                     <div className="bg-slate-800 p-4 m-4 rounded-lg">
-                        <p>Token: </p>
-                        <p>{token.token}</p>
+                        <p>Token: {token.token}</p>
+                        <p>Welcome, {user.name}</p>
+                        <p>Email: {user.email}</p>
                         <p>
-                            {token.isAuthenticated
-                                ? "Authenticated"
-                                : "Not Authenticated"}
+                            Account created:{" "}
+                            {new Date(user.created_at!).toLocaleDateString()}
                         </p>
                     </div>
                 ) : null}

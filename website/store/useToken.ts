@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import axios from "@/lib/axios";
+import { useUser } from "./useUser";
 
 interface Token {
     token: string | null;
@@ -41,15 +42,12 @@ export const useToken = create<AuthStore>()(
                         expiresAt: null,
                     },
                 });
+                useUser.getState().clearUser();
             },
             validateToken: async () => {
                 const { token } = get();
 
-                if (
-                    !token.token ||
-                    !token.expiresAt ||
-                    token.expiresAt < Date.now()
-                ) {
+                if (!token.token || !token.expiresAt) {
                     set({
                         token: {
                             token: null,
@@ -57,6 +55,19 @@ export const useToken = create<AuthStore>()(
                             expiresAt: null,
                         },
                     });
+                    useUser.getState().clearUser();
+                    return false;
+                }
+
+                if (token.expiresAt < Date.now()) {
+                    set({
+                        token: {
+                            token: null,
+                            isAuthenticated: false,
+                            expiresAt: null,
+                        },
+                    });
+                    useUser.getState().clearUser();
                     return false;
                 }
 
@@ -76,6 +87,7 @@ export const useToken = create<AuthStore>()(
                             expiresAt: null,
                         },
                     });
+                    useUser.getState().clearUser();
                     return false;
                 }
             },

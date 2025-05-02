@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Inter, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import TokenValidator from "@/components/auth/TokenValidator";
+import ClientLayout from "./client-layout";
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -14,12 +14,12 @@ export const metadata: Metadata = {
     title: "App Name",
     description: "App Description",
 };
-//
+
 export default function RootLayout({
     children,
-}: Readonly<{
+}: {
     children: React.ReactNode;
-}>) {
+}) {
     return (
         <html lang="en" suppressHydrationWarning>
             <body
@@ -32,8 +32,7 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <TokenValidator />
-                    {children}
+                    <ClientLayout>{children}</ClientLayout>
                 </ThemeProvider>
             </body>
         </html>
