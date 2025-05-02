@@ -20,7 +20,6 @@ export const useAuth = create<AuthStore>()(
                 isAuthenticated: false,
             },
             setUser: (token) => {
-                window.localStorage.setItem("token", token);
                 set({
                     user: {
                         token,
@@ -29,7 +28,6 @@ export const useAuth = create<AuthStore>()(
                 });
             },
             logout: () => {
-                window.localStorage.removeItem("token");
                 set({
                     user: {
                         token: null,

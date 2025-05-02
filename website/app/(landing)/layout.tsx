@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, LogOut } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/store/useAuth";
+import { useRouter } from "next/navigation";
 
 const menuItems = [
     { name: "About", href: "/about" },
@@ -13,25 +15,28 @@ const menuItems = [
 
 export default function layout({ children }: { children: React.ReactNode }) {
     const [menuState, setMenuState] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [isLoading, setIsLoading] = useState(true); // Add loading state
+    const [isLoading, setIsLoading] = useState(true);
+    const { user, logout } = useAuth();
+    const router = useRouter();
 
     useEffect(() => {
-        // Check authentication status on mount and localStorage changes
+        // Initial auth check
         const checkAuth = () => {
             setIsLoading(true);
-            const token = localStorage.getItem("token");
-            setIsAuthenticated(!!token);
-            setIsLoading(false);
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 100);
         };
 
         checkAuth();
     }, []);
 
-    const handleLogout = () => {
-        setIsLoading(true);
-        localStorage.removeItem("token");
-        window.location.href = "/login";
+    const handleLogout = async () => {
+        try {
+            logout();
+        } catch (error) {
+            console.error("Logout error:", error);
+        }
     };
 
     return (
@@ -84,12 +89,11 @@ export default function layout({ children }: { children: React.ReactNode }) {
 
                                 <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit lg:border-l-2 border-white/30 lg:pl-6">
                                     {isLoading ? (
-                                        // Loading skeleton buttons
                                         <>
                                             <div className="h-9 w-24 animate-pulse rounded-md bg-muted" />
                                             <div className="h-9 w-24 animate-pulse rounded-md bg-muted" />
                                         </>
-                                    ) : isAuthenticated ? (
+                                    ) : user.isAuthenticated ? (
                                         <>
                                             <Button
                                                 asChild

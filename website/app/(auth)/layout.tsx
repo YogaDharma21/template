@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/store/useAuth";
 
 export default function AuthLayout({
     children,
@@ -8,20 +9,15 @@ export default function AuthLayout({
     children: React.ReactNode;
 }) {
     const router = useRouter();
+    const user = useAuth((state) => state.user);
 
     useEffect(() => {
-        // Check for token in localStorage
-        const token = localStorage.getItem("token");
-
-        // If token exists, redirect to home
-        if (token) {
+        if (user.isAuthenticated) {
             router.replace("/");
         }
-    }, [router]);
+    }, [router, user.isAuthenticated]);
 
-    // Only render children if there's no token
-    // This prevents flash of content before redirect
-    if (typeof window !== "undefined" && localStorage.getItem("token")) {
+    if (user.isAuthenticated) {
         return null;
     }
 

@@ -2,16 +2,21 @@
 
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/store/useAuth";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
+    const user = useAuth((state) => state.user);
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            router.push("/login");
+        if (!user.isAuthenticated) {
+            router.replace("/");
         }
-    }, [router]);
+    }, [router, user.isAuthenticated]);
+
+    if (!user.isAuthenticated) {
+        return null;
+    }
 
     return <div>{children}</div>;
 }

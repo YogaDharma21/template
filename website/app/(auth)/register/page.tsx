@@ -19,12 +19,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/store/useAuth";
 import axios from "@/lib/axios";
+import { useRouter } from "next/navigation";
+
 const formSchema = z.object({
     name: z.string().min(2).max(50),
     password: z.string().min(2).max(50),
     email: z.string().email(),
     device_name: z.string(),
 });
+
 export default function LoginPage() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -37,6 +40,7 @@ export default function LoginPage() {
     });
 
     const setUser = useAuth((state) => state.setUser);
+    const router = useRouter();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         const csrf = () => axios.get("/sanctum/csrf-cookie");
@@ -46,7 +50,7 @@ export default function LoginPage() {
                 .then((response) => {
                     if (response.data.token) {
                         setUser(response.data.token);
-                        window.location.href = "/";
+                        router.push("/");
                     }
                 })
                 .catch((error) => {

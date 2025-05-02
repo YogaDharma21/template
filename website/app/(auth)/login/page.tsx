@@ -18,6 +18,7 @@ import {
 import { useForm } from "react-hook-form";
 import axios from "@/lib/axios";
 import { useAuth } from "@/store/useAuth";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
     email: z.string().email().min(2).max(50),
@@ -36,6 +37,7 @@ export default function LoginPage() {
     });
 
     const setUser = useAuth((state) => state.setUser);
+    const router = useRouter();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         const csrf = () => axios.get("/sanctum/csrf-cookie");
@@ -45,7 +47,7 @@ export default function LoginPage() {
                 .then((response) => {
                     if (response.data.token) {
                         setUser(response.data.token);
-                        window.location.href = "/";
+                        router.push("/");
                     }
                 })
                 .catch((error) => {
