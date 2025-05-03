@@ -19,6 +19,8 @@ import { useForm } from "react-hook-form";
 import axios from "@/lib/axios";
 import { useToken } from "@/store/useToken";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useState } from "react";
 
 const formSchema = z.object({
     email: z.string().email().min(2).max(50),
@@ -36,10 +38,12 @@ export default function LoginPage() {
         },
     });
 
+    const [isLoading, setIsLoading] = useState(false);
     const setToken = useToken((state) => state.setToken);
     const router = useRouter();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsLoading(true);
         const csrf = () => axios.get("/sanctum/csrf-cookie");
         csrf().then(() => {
             axios
@@ -50,11 +54,18 @@ export default function LoginPage() {
                             response.data.token,
                             response.data.expires_in || 60
                         );
+                        toast.success("Successfully logged in!");
                         router.push("/");
                     }
                 })
                 .catch((error) => {
                     console.log(error);
+                    toast.error(
+                        "Failed to login. Please check your credentials."
+                    );
+                })
+                .finally(() => {
+                    setIsLoading(false);
                 });
         });
     }
@@ -122,8 +133,12 @@ export default function LoginPage() {
                                         </FormItem>
                                     )}
                                 />
-                                <Button type="submit" className="w-full">
-                                    Submit
+                                <Button
+                                    type="submit"
+                                    className="w-full cursor-pointer"
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? "Logging in..." : "Submit"}
                                 </Button>
                             </form>
                         </Form>

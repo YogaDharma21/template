@@ -20,6 +20,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useToken } from "@/store/useToken";
 import axios from "@/lib/axios";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useState } from "react";
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
@@ -39,22 +41,32 @@ export default function LoginPage() {
         },
     });
 
+    const [isLoading, setIsLoading] = useState(false);
     const setToken = useToken((state) => state.setToken);
     const router = useRouter();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsLoading(true);
         const csrf = () => axios.get("/sanctum/csrf-cookie");
         csrf().then(() => {
             axios
                 .post("/api/auth/register", values)
                 .then((response) => {
                     if (response.data.token) {
-                        setToken(response.data.token);
+                        setToken(
+                            response.data.token,
+                            response.data.expires_in || 60
+                        );
+                        toast.success("Account created successfully!");
                         router.push("/");
                     }
                 })
                 .catch((error) => {
                     console.log(error);
+                    toast.error("Failed to create account. Please try again.");
+                })
+                .finally(() => {
+                    setIsLoading(false);
                 });
         });
     }
@@ -139,8 +151,14 @@ export default function LoginPage() {
                                         </FormItem>
                                     )}
                                 />
-                                <Button type="submit" className="w-full cursor">
-                                    Continue
+                                <Button
+                                    type="submit"
+                                    className="w-full cursor-pointer"
+                                    disabled={isLoading}
+                                >
+                                    {isLoading
+                                        ? "Creating account..."
+                                        : "Continue"}
                                 </Button>
                             </form>
                         </Form>
