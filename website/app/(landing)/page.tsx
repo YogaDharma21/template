@@ -1,51 +1,13 @@
 "use client";
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { useToken } from "@/store/useToken";
-import { useUser } from "@/store/useUser";
-import { ArrowRight, Mail, Menu, Rocket, SendHorizonal, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 
 export default function page() {
-    const [isLoading, setIsLoading] = useState(true);
-    const token = useToken((state) => state.token);
-    const user = useUser((state) => state.user);
-
-    useEffect(() => {
-        // Set loading to false after a short delay to prevent flash
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 500);
-
-        return () => clearTimeout(timer);
-    }, []);
-    console.log(user);
-    console.log(token);
     return (
         <>
             <main className="overflow-hidden">
-                {isLoading ? (
-                    <div className="bg-slate-800 p-4 m-4 rounded-lg">
-                        <div className="space-y-2">
-                            <div className="h-4 w-20 animate-pulse rounded bg-slate-700" />
-                            <div className="h-4 w-32 animate-pulse rounded bg-slate-700" />
-                            <div className="h-4 w-40 animate-pulse rounded bg-slate-700" />
-                        </div>
-                    </div>
-                ) : token.isAuthenticated && user.id ? (
-                    <div className="bg-slate-800 p-4 m-4 rounded-lg">
-                        <p>Token: {token.token}</p>
-                        <p>Welcome, {user.name}</p>
-                        <p>Email: {user.email}</p>
-                        <p>
-                            Account created:{" "}
-                            {new Date(user.created_at!).toLocaleDateString()}
-                        </p>
-                    </div>
-                ) : null}
-
                 <div className="relative mx-auto max-w-5xl py-14">
                     <div className="lg:flex lg:items-center lg:gap-12">
                         <div className="relative z-10 mx-auto max-w-xl text-center">
@@ -59,7 +21,6 @@ export default function page() {
                             <div className="mt-8">
                                 <Button asChild size="lg">
                                     <Link href="/register">
-                                        <Rocket className="relative size-4" />
                                         <span className="btn-label">
                                             Get Started
                                         </span>

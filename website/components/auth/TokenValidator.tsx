@@ -5,7 +5,7 @@ import { useToken } from "@/store/useToken";
 import { useRouter, usePathname } from "next/navigation";
 
 // Define public routes that don't require authentication
-const publicRoutes = ["/", "/login", "/register", "/about", "/contact"];
+const publicRoutes = ["/", "/login", "/register", "/forgot-password", "/about", "/contact"];
 
 export default function TokenValidator() {
     const { validateToken } = useToken();
