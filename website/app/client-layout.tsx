@@ -17,9 +17,6 @@ export default function ClientLayout({
         const fetchProfile = async () => {
             if (token.isAuthenticated && token.token) {
                 try {
-                    const csrf = () => axios.get("/sanctum/csrf-cookie");
-                    await csrf();
-
                     const response = await axios.get("/api/profile", {
                         headers: {
                             Authorization: `Bearer ${token.token}`,

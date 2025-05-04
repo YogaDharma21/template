@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import Logo from "@/components/logo";
 import Link from "next/link";
-
 import {
     Form,
     FormControl,
@@ -18,7 +17,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-// Schema for email validation
 const formSchema = z.object({
     email: z.string().email({ message: "Invalid email address" }),
 });

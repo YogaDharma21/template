@@ -22,6 +22,7 @@ import axios from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
@@ -42,33 +43,31 @@ export default function LoginPage() {
     });
 
     const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const setToken = useToken((state) => state.setToken);
     const router = useRouter();
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
-        const csrf = () => axios.get("/sanctum/csrf-cookie");
-        csrf().then(() => {
-            axios
-                .post("/api/auth/register", values)
-                .then((response) => {
-                    if (response.data.token) {
-                        setToken(
-                            response.data.token,
-                            response.data.expires_in || 60
-                        );
-                        toast.success("Account created successfully!");
-                        router.push("/");
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                    toast.error("Failed to create account. Please try again.");
-                })
-                .finally(() => {
-                    setIsLoading(false);
-                });
-        });
+        axios
+            .post("/api/auth/register", values)
+            .then((response) => {
+                if (response.data.token) {
+                    setToken(
+                        response.data.token,
+                        response.data.expires_in || 60
+                    );
+                    toast.success("Account created successfully!");
+                    router.push("/");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                toast.error("Failed to create account. Please try again.");
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     }
 
     return (
@@ -133,19 +132,36 @@ export default function LoginPage() {
                                         <FormItem>
                                             <FormLabel className="flex justify-between">
                                                 Password
-                                                <Link
-                                                    href="/forgot-password"
-                                                    className="hover:underline text-sm"
-                                                >
-                                                    Forgot Your Password ?
-                                                </Link>
                                             </FormLabel>
                                             <FormControl>
-                                                <Input
-                                                    placeholder="*******"
-                                                    type="password"
-                                                    {...field}
-                                                />
+                                                <div className="relative">
+                                                    <Input
+                                                        placeholder="*******"
+                                                        type={
+                                                            showPassword
+                                                                ? "text"
+                                                                : "password"
+                                                        }
+                                                        {...field}
+                                                    />
+                                                    <Button
+                                                        type="button"
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                                                        onClick={() =>
+                                                            setShowPassword(
+                                                                !showPassword
+                                                            )
+                                                        }
+                                                    >
+                                                        {showPassword ? (
+                                                            <EyeOff className="h-4 w-4" />
+                                                        ) : (
+                                                            <Eye className="h-4 w-4" />
+                                                        )}
+                                                    </Button>
+                                                </div>
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>

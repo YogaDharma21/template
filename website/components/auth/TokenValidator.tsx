@@ -4,8 +4,15 @@ import { useEffect } from "react";
 import { useToken } from "@/store/useToken";
 import { useRouter, usePathname } from "next/navigation";
 
-// Define public routes that don't require authentication
-const publicRoutes = ["/", "/login", "/register", "/forgot-password", "/about", "/contact"];
+const publicRoutes = [
+    "/",
+    "/login",
+    "/register",
+    "/forgot-password",
+    "/about",
+    "/contact",
+    "/password-reset/[token]",
+];
 
 export default function TokenValidator() {
     const { validateToken } = useToken();
@@ -15,16 +22,16 @@ export default function TokenValidator() {
     useEffect(() => {
         const checkToken = async () => {
             const isValid = await validateToken();
-            // Only redirect if the token is invalid AND the current route is not public
-            if (!isValid && !publicRoutes.includes(pathname)) {
+            const isPublicRoute =
+                publicRoutes.includes(pathname) ||
+                pathname.startsWith("/password-reset/");
+            if (!isValid && !isPublicRoute) {
                 router.replace("/login");
             }
         };
 
-        // Check token immediately
         checkToken();
 
-        // Set up interval to check token every 30 seconds
         const interval = setInterval(checkToken, 30000);
 
         return () => clearInterval(interval);
