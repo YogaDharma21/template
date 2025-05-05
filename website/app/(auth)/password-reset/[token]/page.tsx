@@ -53,24 +53,22 @@ export default function PasswordResetPage() {
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
-        console.log("Submitting password reset", values);
-        console.log("Token:", token);
-        // axios
-        //     .post("/api/auth/reset-password", {
-        //         ...values,
-        //         token: token,
-        //     })
-        //     .then(() => {
-        //         toast.success("Password reset successful!");
-        //         router.push("/login");
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //         toast.error("Failed to reset password. Please try again.");
-        //     })
-        //     .finally(() => {
-        //         setIsLoading(false);
-        //     });
+        axios
+            .post("/api/auth/reset-password", {
+                ...values,
+                token: token,
+            })
+            .then(() => {
+                toast.success("Password reset successful!");
+                router.push("/login");
+            })
+            .catch((error) => {
+                console.log(error);
+                toast.error("Failed to reset password. Please try again.");
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     }
 
     return (

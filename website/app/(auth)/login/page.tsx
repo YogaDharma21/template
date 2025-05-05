@@ -44,27 +44,23 @@ export default function LoginPage() {
     const setToken = useToken((state) => state.setToken);
     const router = useRouter();
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
-        axios
-            .post("/api/auth/login", values)
-            .then((response) => {
-                if (response.data.token) {
-                    setToken(
-                        response.data.token,
-                        response.data.expires_in || 60
-                    );
-                    toast.success("Successfully logged in!");
-                    router.push("/");
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-                toast.error("Failed to login. Please check your credentials.");
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        try {
+            const response = await axios.post("/api/auth/login", values);
+
+            if (response.data.token) {
+                setToken(response.data.token, response.data.expires_in || 60);
+                await new Promise((resolve) => setTimeout(resolve, 100));
+                toast.success("Successfully logged in!");
+                router.replace("/dashboard");
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("Failed to login. Please check your credentials.");
+        } finally {
+            setIsLoading(false);
+        }
     }
     return (
         <section className="flex min-h-screen bg-zinc-50 px-4 dark:bg-transparent">
