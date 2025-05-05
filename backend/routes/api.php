@@ -16,11 +16,11 @@ Route::group(['prefix' => 'auth'], function () {
 
     Route::post('/forgot-password', Auth\PasswordResetLinkController::class)
         ->middleware('guest')
-        ->name('auth.password.forgot');
+        ->name('password.email');
 
     Route::post('/reset-password', Auth\NewPasswordController::class)
         ->middleware('guest')
-        ->name('auth.password.reset');
+        ->name('password.store');
 
     Route::post('/logout', Auth\LogoutController::class)->middleware('auth:sanctum')->name('auth.logout');
 });
