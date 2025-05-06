@@ -4,6 +4,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return response()->json([
-        'laravel' => app()->version(),
+        'Laravel' => app()->version(),
     ]);
 });

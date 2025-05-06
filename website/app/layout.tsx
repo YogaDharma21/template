@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Kanit } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
+import ClientLayout from "./client-layout";
+import { Toaster } from "@/components/ui/sonner";
 
-const kanit = Kanit({
+const poppins = Poppins({
     subsets: ["latin"],
-    weight: ["300", "400", "500", "700", "800"],
-    variable: "--font-kanit",
-});
-
-const geist = Geist({
-    subsets: ["latin"],
-    variable: "--font-geist",
+    weight: ["300", "400", "500", "600", "700"],
+    variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
@@ -20,16 +18,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
     children,
-}: Readonly<{
+}: {
     children: React.ReactNode;
-}>) {
+}) {
     return (
         <html lang="en" suppressHydrationWarning>
             <body
-                className={`${kanit.variable} ${geist.variable} antialiased`}
+                className={`${poppins.variable} antialiased`}
                 suppressHydrationWarning
             >
-                {children}
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="dark"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <ClientLayout>{children}</ClientLayout>
+                    <Toaster />
+                </ThemeProvider>
             </body>
         </html>
     );

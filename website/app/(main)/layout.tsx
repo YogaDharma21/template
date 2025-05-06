@@ -1,5 +1,27 @@
-import React from "react";
+"use client";
 
-export default function layout( { children }: { children: React.ReactNode }) {
-  return <div>{children}</div>;
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useToken } from "@/store/useToken";
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+    const router = useRouter();
+    const { token, validateToken } = useToken();
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            const isValid = await validateToken();
+            if (!isValid) {
+                router.replace("/");
+            }
+        };
+
+        checkAuth();
+    }, [router, validateToken]);
+
+    if (!token.isAuthenticated) {
+        return null;
+    }
+
+    return <div>{children}</div>;
 }
