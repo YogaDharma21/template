@@ -124,6 +124,7 @@ export default function LoginPage() {
                                                                 ? "text"
                                                                 : "password"
                                                         }
+                                                        className="pr-10"
                                                         {...field}
                                                     />
                                                     <Button
