@@ -29,6 +29,7 @@ interface NavItemProps {
     onClick?: () => void;
     tooltip: string;
     as?: React.ElementType;
+    asChild?: boolean;
 }
 
 const NavItem = ({
@@ -97,9 +98,9 @@ export function Sidebar() {
                         <MenubarMenu>
                             <MenubarTrigger className="p-0">
                                 <NavItem
-                                    as="div"
                                     icon={<Menu className="w-6 h-6" />}
                                     tooltip="Menu"
+                                    asChild
                                 />
                             </MenubarTrigger>
                             <MenubarContent className="w-64 bg-zinc-900 border-zinc-800">
