@@ -55,9 +55,23 @@ export default function LoginPage() {
                 toast.success("Successfully logged in!");
                 router.replace("/dashboard");
             }
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
-            toast.error("Failed to login. Please check your credentials.");
+            if (error.response?.data?.errors) {
+                const errors = error.response.data.errors;
+                Object.entries(errors).forEach(([field, messages]) => {
+                    if (Array.isArray(messages)) {
+                        form.setError(field as any, {
+                            message: messages[0],
+                        });
+                        messages.forEach((message) => {
+                            toast.error(`${field}: ${message}`);
+                        });
+                    }
+                });
+            } else {
+                toast.error("Failed to login. Please check your credentials.");
+            }
         } finally {
             setIsLoading(false);
         }

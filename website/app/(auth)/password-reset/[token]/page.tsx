@@ -124,6 +124,7 @@ export default function PasswordResetPage() {
                                                                 ? "text"
                                                                 : "password"
                                                         }
+                                                        className="pr-10"
                                                         {...field}
                                                     />
                                                     <Button
@@ -166,6 +167,7 @@ export default function PasswordResetPage() {
                                                                 ? "text"
                                                                 : "password"
                                                         }
+                                                        className="pr-10"
                                                         {...field}
                                                     />
                                                     <Button

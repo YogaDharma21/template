@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useToken } from "@/store/useToken";
+import { Sidebar } from "@/components/sidebar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
@@ -23,5 +24,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         return null;
     }
 
-    return <div>{children}</div>;
+    return (
+        <div>
+            <Sidebar />
+            <div className="md:ml-16">{children}</div>
+        </div>
+    );
 }

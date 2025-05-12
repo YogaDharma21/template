@@ -44,6 +44,7 @@ export default function LoginPage() {
 
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const setToken = useToken((state) => state.setToken);
     const router = useRouter();
 
@@ -58,9 +59,23 @@ export default function LoginPage() {
                 toast.success("Account created successfully!");
                 router.replace("/dashboard");
             }
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
-            toast.error("Failed to create account. Please try again.");
+            if (error.response?.data?.errors) {
+                const errors = error.response.data.errors;
+                Object.entries(errors).forEach(([field, messages]) => {
+                    if (Array.isArray(messages)) {
+                        form.setError(field as any, {
+                            message: messages[0],
+                        });
+                        messages.forEach((message) => {
+                            toast.error(`${field}: ${message}`);
+                        });
+                    }
+                });
+            } else {
+                toast.error("Failed to create account. Please try again.");
+            }
         } finally {
             setIsLoading(false);
         }
@@ -84,6 +99,11 @@ export default function LoginPage() {
                     <hr className="my-4 border-white/30" />
 
                     <div className="space-y-6">
+                        {error && (
+                            <div className="text-sm text-red-500 text-center">
+                                {error}
+                            </div>
+                        )}
                         <Form {...form}>
                             <form
                                 onSubmit={form.handleSubmit(onSubmit)}
