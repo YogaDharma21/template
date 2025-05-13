@@ -98,6 +98,7 @@ export function Sidebar() {
                         <MenubarMenu>
                             <MenubarTrigger className="p-0">
                                 <NavItem
+                                    as="div"
                                     icon={<Menu className="w-6 h-6" />}
                                     tooltip="Menu"
                                     asChild
