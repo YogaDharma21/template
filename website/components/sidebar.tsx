@@ -43,8 +43,12 @@ const NavItem = ({
     const isMobile = useIsMobile();
     const baseClasses = cn(
         "flex items-center justify-center transition-colors relative group",
-        isActive ? "text-white" : "text-gray-500 hover:text-gray-300",
-        isButton ? "bg-zinc-800 rounded-md p-2 md:p-3" : "p-3 md:p-4"
+        isActive
+            ? "text-gray-900 dark:text-white"
+            : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300",
+        isButton
+            ? "bg-gray-200 dark:bg-zinc-800 rounded-md p-2 md:p-3"
+            : "p-3 md:p-4"
     );
 
     return (
@@ -67,7 +71,7 @@ export function Sidebar() {
 
     return (
         <>
-            <div className="hidden md:flex fixed left-0 top-0 h-full w-16 flex-col items-center justify-between py-6 bg-black">
+            <div className="hidden md:flex fixed left-0 top-0 h-full w-16 flex-col items-center justify-between py-6 bg-background">
                 <div className="flex flex-col items-center gap-1">
                     <div className="mb-6">Logo</div>
                     <NavItem
@@ -104,7 +108,7 @@ export function Sidebar() {
                                     asChild
                                 />
                             </MenubarTrigger>
-                            <MenubarContent className="w-64 bg-zinc-900 border-zinc-800">
+                            <MenubarContent className="w-64 bg-background border-border ml-10">
                                 <div className="flex flex-col">
                                     <MenubarItem className="flex items-center justify-between">
                                         Appearance
@@ -114,7 +118,7 @@ export function Sidebar() {
                                     <MenubarItem>Settings</MenubarItem>
                                 </div>
 
-                                <MenubarSeparator className="bg-zinc-800" />
+                                <MenubarSeparator className="bg-border" />
 
                                 <div className="flex flex-col">
                                     <MenubarItem className="flex items-center justify-between">
@@ -125,7 +129,7 @@ export function Sidebar() {
                                     <MenubarItem>Liked</MenubarItem>
                                 </div>
 
-                                <MenubarSeparator className="bg-zinc-800" />
+                                <MenubarSeparator className="bg-border" />
 
                                 <div className="flex flex-col">
                                     <MenubarItem>Report a problem</MenubarItem>
@@ -139,7 +143,7 @@ export function Sidebar() {
                 </div>
             </div>
 
-            <div className="md:hidden fixed bottom-0 left-0 right-0 flex items-center justify-around bg-black py-2 border-t border-zinc-800">
+            <div className="md:hidden fixed bottom-0 left-0 right-0 flex items-center justify-around bg-background py-2 border-t border-border">
                 <NavItem
                     icon={<Home className="w-6 h-6" />}
                     isActive

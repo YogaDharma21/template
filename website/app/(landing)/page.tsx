@@ -14,7 +14,7 @@ export default function page() {
                             <h1 className="mt-10 text-4xl font-bold md:text-5xl xl:text-5xl tracking-wide">
                                 Project Proposition
                             </h1>
-                            <p className="mt-8 text-lg text-white/65">
+                            <p className="mt-8 text-lg text-muted-foreground">
                                 Project description
                             </p>
 
