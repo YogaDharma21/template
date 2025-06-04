@@ -21,6 +21,9 @@ import {
     MenubarSeparator,
     MenubarTrigger,
 } from "@/components/ui/menubar";
+import { useToken } from "@/store/useToken";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface NavItemProps {
     icon: React.ReactNode;
@@ -68,12 +71,26 @@ const NavItem = ({
 
 export function Sidebar() {
     const isMobile = useIsMobile();
+    const { logout } = useToken();
+    const router = useRouter();
 
+    const handleLogout = async () => {
+        try {
+            logout();
+            router.replace("/");
+            toast.success("Successfully logged out!");
+        } catch (error) {
+            console.error("Logout error:", error);
+            toast.error("Failed to log out");
+        }
+    };
     return (
         <>
-            <div className="hidden md:flex fixed left-0 top-0 h-full w-16 flex-col items-center justify-between py-6 bg-background">
-                <div className="flex flex-col items-center gap-1">
+            <div className="hidden md:flex fixed left-0 top-0 h-full w-16 flex-col items-center py-6 justify-between bg-card">
+                <div>
                     <div className="mb-6">Logo</div>
+                </div>
+                <div className="flex flex-col gap-1">
                     <NavItem
                         icon={<Home className="w-6 h-6" />}
                         isActive
@@ -133,7 +150,10 @@ export function Sidebar() {
 
                                 <div className="flex flex-col">
                                     <MenubarItem>Report a problem</MenubarItem>
-                                    <MenubarItem className="text-red-500">
+                                    <MenubarItem
+                                        className="text-red-500"
+                                        onClick={handleLogout}
+                                    >
                                         Log out
                                     </MenubarItem>
                                 </div>
